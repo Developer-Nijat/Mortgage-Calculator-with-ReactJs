@@ -8,6 +8,10 @@ const MortgageCalculator = () => {
   const [principal, setPrincipal] = useState(0);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
+  useEffect(() => {
+    calculateMonthlyPayment();
+  }, [loanAmount, interestRate, loanTerm, initialPayment]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "loanAmount") {
@@ -20,10 +24,6 @@ const MortgageCalculator = () => {
       setInitialPayment(value);
     }
   };
-
-  useEffect(() => {
-    calculateMonthlyPayment();
-  }, [loanAmount, interestRate, loanTerm, initialPayment]);
 
   const calculateMonthlyPayment = () => {
     if (!loanAmount || !loanTerm || !initialPayment) {
@@ -55,6 +55,12 @@ const MortgageCalculator = () => {
     setPrincipal(0);
     setMonthlyPayment(0);
   };
+
+  const totalPaidPayments = (
+    Number(loanTerm) *
+    12 *
+    Number(monthlyPayment)
+  ).toFixed(2);
 
   return (
     <div>
@@ -128,6 +134,12 @@ const MortgageCalculator = () => {
             {monthlyPayment} <i className="fa-solid fa-manat-sign"></i>
           </p>
           <p>Aylıq ödəniş</p>
+          <hr />
+          <p className="h2 mb-0">
+            {Number(initialPayment) + Number(totalPaidPayments)}{" "}
+            <i className="fa-solid fa-manat-sign"></i>
+          </p>
+          <p>Yekun məbləğ</p>
           <hr />
           {Boolean(monthlyPayment) && (
             <button onClick={clearForm} type="button" className="btn btn-light">
